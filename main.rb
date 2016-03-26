@@ -32,7 +32,12 @@ post '/reboot' do
     puts "PIN ACCEPTED"
     #system("echo \"sudo shutdown -r 5\" > /tmp/reboot.log")
     system "echo reboot requested #{Time.now} by #{request.ip} >> /tmp/reboot.log"
-    system "sudo shutdown -r 5"
+    wall_command =  "wall <<ENDOFWALL\n"
+    wall_command << "System is rebooting in 5 seconds\n"
+    wall_command << "ENDOFWALL\n"
+    system wall_command
+    sleep 5
+    system "sudo /sbin/shutdown -r now"
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
