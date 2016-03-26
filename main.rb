@@ -3,8 +3,6 @@ require 'sinatra'
 require 'slim'
 require 'base64'
 
-require 'pry'
-
 unless %{0.0.0.0 ::}.include?(ARGV[0])
   puts "Need bind IPv4 or IPv6 Bind address."
   puts "Possible Values are:"
@@ -24,11 +22,8 @@ end
 #FIXME loading PIN
 PIN = Base64.decode64 "OTI0Nw==\n"
 
-# Loading Slim Template
-index = Slim::Template.new('index.slim')
-
 get '/' do
-  index.render
+  slim :index
 end
 
 post '/reboot' do
