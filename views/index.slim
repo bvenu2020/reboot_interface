@@ -27,7 +27,11 @@ html
           .col-md-4
             input#pin class="form-control" type="password"
         .row
-          .col-md-12
-            button#fire class="btn btn-default btn-lg btn-block" "Reboot"
-            script $('#fire').on('click',fire);
+          .col-md-4 class="col-md-push-4"
+            button#reboot class="btn btn-default btn-lg btn-block" Reboot
+            script $('#reboot').on('click',reboot.ajax);
+        .row
+          .col-md-4 class="col-md-push-4"
+            button#shutdown class="btn btn-default btn-lg btn-block" Shutdown
+            script $('#shutdown').on('click',shutdown.ajax);
 

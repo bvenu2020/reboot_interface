@@ -30,10 +30,21 @@ post '/reboot' do
   content_type :json
   if params[:pin] == PIN
     puts "PIN ACCEPTED"
-    system("echo \"sudo shutdown -r 5\" > test.log")
+    #system("echo \"sudo shutdown -r 5\" > /tmp/reboot.log")
+    system "echo reboot requested #{Time.now} by #{request.ip} >> /tmp/reboot.log"
+    system "sudo shutdown -r 5"
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
   end
 end
 
+post '/shutdown' do
+  content_type :json
+  if params[:pin] == PIN
+    system("echo \"shutdown -P 5\" > /tmp/shutdown.log")
+    '{"status": "accepted"}'
+  else
+    '{"status": "rejected"}'
+  end
+end

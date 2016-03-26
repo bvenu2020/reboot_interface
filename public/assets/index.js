@@ -1,5 +1,6 @@
+var reboot = {};
 
-function ajax_error(jqXHR,textStatus,error){
+reboot.ajax_error = function(jqXHR,textStatus,error){
   var stat_p = $('#status>p');
   console.log("ERROR");
   console.log(textStatus);
@@ -7,9 +8,9 @@ function ajax_error(jqXHR,textStatus,error){
   stat_p.text("Ajax Error");
   stat_p.removeClass();
   stat_p.addClass('bg-danger');
-}
+};
 
-function ajax_success(data,textStatus,jqXHR){
+reboot.ajax_success = function(data,textStatus,jqXHR){
   var stat_p = $('#status>p');
   console.log("SUCCESS");
   console.log(data);
@@ -22,19 +23,50 @@ function ajax_success(data,textStatus,jqXHR){
     stat_p.removeClass();
     stat_p.addClass('bg-warning');
   };
-}
+};
 
-function fire(){
+reboot.ajax = function(){
   pin = $('#pin').val();
-  console.log(pin);
+  //console.log(pin);
   $.ajax(
     "/reboot",
     {
       'method': 'POST',
       'data': {'pin': pin},
       'dataType': 'json',
-      'error': ajax_error,
-      'success': ajax_success
+      'error': reboot.ajax_error,
+      'success': reboot.ajax_success
     }
   );
-}
+};
+
+var shutdown = {};
+
+shutdown.ajax_error = reboot.ajax_error;
+
+shutdown.ajax_success = function(data, textStatus, jqXHR){
+  var stat_p = $('#status>p');
+  if(data['status'] == 'accepted'){
+    stat_p.text("PIN Accepted. Server is shutting down in 5 seconds.");
+    stat_p.removeClass();
+    stat_p.addClass('bg-success');
+  }else{
+    stat_p.text("PIN rejected");
+    stat_p.removeClass();
+    stat_p.addClass('bg-warning');
+  };
+};
+
+shutdown.ajax = function(){
+  pin = $('#pin').val();
+  $.ajax(
+    "/shutdown",
+    {
+      'method': 'POST',
+      'data': {'pin': pin},
+      'dataType': 'json',
+      'error': shutdown.ajax_error,
+      'success': shutdown.ajax_success
+    }
+  );
+};
