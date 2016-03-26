@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    meta charset="utf-8"
+    title Reboot
+    link rel="stylesheet" media="screen, projection" href="/vendor/bootstrap.min.css"
+    link rel="stylesheet" media="screen, projection" href="/vendor/bootstrap-theme.min.css"
+    script src="/vendor/jquery-2.2.2.min.js"
+    script src="/vendor/bootstrap.min.js"
+    script src="index.js"
+
+  body
+    .container-fluid
+      .row
+        .col-md-12
+          h2 Reboot
+      .row
+        .row
+          .col-md-4
+            p.pull-right Status:
+          .col-md-4
+            #status
+              p.bg-primary Ready
+        .row
+          .col-md-4
+            p.pull-right PIN:
+          .col-md-4
+            input#pin class="form-control" type="password"
+        .row
+          .col-md-12
+            button#fire class="btn btn-default btn-lg btn-block" "Reboot"
+            script $('#fire').on('click',fire);
+
