@@ -1,3 +1,33 @@
+var ping = {};
+ping.ajax_error = function(jqXHR, textStatus, error) {
+  console.log("ping error");
+  console.log(textStatus);
+  var stat_p = $('#status>p');
+  stat_p.text("Ping Failed. Retrying in 2s");
+  stat_p.removeClass();
+  stat_p.addClass('bg-warning');
+  setTimeout(ping.ajax,2000);
+};
+
+ping.ajax_success = function(data, textStatus, jqXHR) {
+  console.log(data);
+  var stat_p = $('#status>p');
+  stat_p.text("Server Available");
+  stat_p.removeClass();
+  stat_p.addClass('bg-success');
+};
+ping.ajax = function(){
+  $.ajax(
+    "/ping",
+    {
+      method: 'POST',
+      dataType: 'json',
+      error: ping.ajax_error,
+      success: ping.ajax_success
+    }
+  );
+};
+
 var reboot = {};
 
 reboot.ajax_error = function(jqXHR,textStatus,error){
@@ -17,7 +47,8 @@ reboot.ajax_success = function(data,textStatus,jqXHR){
   if(data['status'] == 'accepted'){
     stat_p.text("PIN Accepted. Server is rebooting in 5 seconds.");
     stat_p.removeClass();
-    stat_p.addClass('bg-success');
+    stat_p.addClass('bg-info');
+    setTimeout(ping.ajax,10000);
   }else{
     stat_p.text("PIN rejected");
     stat_p.removeClass();

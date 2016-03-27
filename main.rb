@@ -22,6 +22,8 @@ end
 #FIXME loading PIN
 PIN = Base64.decode64 "MzQ4\n" #"OTI0Nw==\n"
 
+threads = []
+
 get '/' do
   slim :index
 end
@@ -30,14 +32,9 @@ post '/reboot' do
   content_type :json
   if params[:pin] == PIN
     puts "PIN ACCEPTED"
-    #system("echo \"sudo shutdown -r 5\" > /tmp/reboot.log")
     system "echo reboot requested #{Time.now} by #{request.ip} >> /tmp/reboot.log"
-    wall_command =  "wall <<ENDOFWALL\n"
-    wall_command << "System is rebooting in 5 seconds\n"
-    wall_command << "ENDOFWALL\n"
-    system wall_command
-    sleep 5
-    system "sudo /sbin/shutdown -r now"
+    puts "REBOOTING"
+    threads << Thread.new{system("sleep 5 && sudo /sbin/shutdown -r now")}
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
@@ -47,9 +44,15 @@ end
 post '/shutdown' do
   content_type :json
   if params[:pin] == PIN
-    system("echo \"shutdown -P 5\" > /tmp/shutdown.log")
+    system "echo shutdown requested #{Time.now} by #{request.ip} >> /tmp/shutdown.log"
+    system "shutdown -P now"
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
   end
+end
+
+post '/ping' do
+  content_type :json
+  '"pong"'
 end
