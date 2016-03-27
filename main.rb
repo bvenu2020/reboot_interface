@@ -20,7 +20,7 @@ configure do
 end
 
 #FIXME loading PIN
-PIN = Base64.decode64 "OTI0Nw==\n"
+PIN = Base64.decode64 "MzQ4\n" #"OTI0Nw==\n"
 
 get '/' do
   slim :index
