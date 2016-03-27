@@ -16,22 +16,24 @@ html
           h2 Reboot
       .row
         .row
-          .col-md-4
-            p.pull-right Status:
-          .col-md-4
+          .col-md-12
+            p Status:
+        .row
+          .col-md-12
             #status
               p.bg-primary Ready
         .row
-          .col-md-4
-            p.pull-right PIN:
-          .col-md-4
+          .col-md-12
+            p PIN:
+        .row
+          .col-md-12
             input#pin class="form-control" type="password"
         .row
-          .col-md-4 class="col-md-push-4"
+          .col-md-12
             button#reboot class="btn btn-default btn-lg btn-block" Reboot
             script $('#reboot').on('click',reboot.ajax);
         .row
-          .col-md-4 class="col-md-push-4"
+          .col-md-12
             button#shutdown class="btn btn-default btn-lg btn-block" Shutdown
             script $('#shutdown').on('click',shutdown.ajax);
 
