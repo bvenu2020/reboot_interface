@@ -22,8 +22,6 @@ end
 #FIXME loading PIN
 PIN = Base64.decode64 "MzQ4\n" #"OTI0Nw==\n"
 
-threads = []
-
 get '/' do
   slim :index
 end
@@ -34,7 +32,7 @@ post '/reboot' do
     puts "PIN ACCEPTED"
     system "echo reboot requested #{Time.now} by #{request.ip} >> /tmp/reboot.log"
     puts "REBOOTING"
-    threads << Thread.new{system("sleep 5 && sudo /sbin/shutdown -r now")}
+    Thread.new{system("sleep 5 && sudo /sbin/shutdown -r now")}
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
