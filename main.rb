@@ -43,7 +43,7 @@ post '/shutdown' do
   content_type :json
   if params[:pin] == PIN
     system "echo shutdown requested #{Time.now} by #{request.ip} >> /tmp/shutdown.log"
-    system "shutdown -P now"
+    system "sleep 5 && shutdown -P now"
     '{"status": "accepted"}'
   else
     '{"status": "rejected"}'
